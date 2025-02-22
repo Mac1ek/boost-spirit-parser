@@ -37,7 +37,11 @@ class PNRParser : public qi::grammar<Iterator, PNRWrapper(), ascii::space_type> 
         qi::lit("NumberOfPassengers=") >> Q_TEXT >>
         qi::lit("PNR_TransDate=") >> Q_TEXT >>
         qi::lit("PNR_CreationDate=") >> Q_TEXT >>
-        qi::lit(">"); 
+        qi::lit(">") >>
+      T_BOOKING [phoenix::bind(&PNRData::booking, qi::_val) = qi::_1] >>
+      T_PASSENGERS [phoenix::bind(&PNRData::passengers, qi::_val) = qi::_1] >>
+      T_FLIGHT [phoenix::bind(&PNRData::flight, qi::_val) = qi::_1] >>
+      qi::lit("</PNR>");
     }
 
     void create_booking_rule() {
@@ -127,11 +131,7 @@ class PNRParser : public qi::grammar<Iterator, PNRWrapper(), ascii::space_type> 
 
     void create_xmldata_rule() {
       T_XML = qi::lit("<DaneXML>") >> 
-        T_PNR [phoenix::bind(&PNRWrapper::pnr, qi::_val) = qi::_1] >> 
-        T_BOOKING [phoenix::bind(&PNRWrapper::booking, qi::_val) = qi::_1] >>
-        T_PASSENGERS [phoenix::bind(&PNRWrapper::passengers, qi::_val) = qi::_1] >>
-        T_FLIGHT [phoenix::bind(&PNRWrapper::flight, qi::_val) = qi::_1] >>
-        qi::lit("</PNR>") >>
+        T_PNR [phoenix::bind(&PNRWrapper::pnr, qi::_val) = qi::_1] >>
         qi::lit("</DaneXML>");
     }
 

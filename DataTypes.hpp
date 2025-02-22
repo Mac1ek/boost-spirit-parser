@@ -4,14 +4,6 @@
 #include <string>
 #include <vector>
 
-struct PNRData {
-    std::string xsd;
-    std::string xsi;
-    std::string NumberOffPassengers;
-    std::string PNR_TransDate;
-    std::string PNR_CreationDate;
-};
-
 struct BookingData {
   std::string xmlns;
   std::string ID;
@@ -73,11 +65,19 @@ struct FlightData {
   std::string CompanyCode;
 };
 
-struct PNRWrapper {
-  PNRData pnr;
+struct PNRData {
+  std::string xsd;
+  std::string xsi;
+  std::string NumberOffPassengers;
+  std::string PNR_TransDate;
+  std::string PNR_CreationDate;
   BookingData booking;
   std::vector<PassengerData> passengers;
   FlightData flight;
+};
+
+struct PNRWrapper {
+  PNRData pnr;
 };
 
 #endif
